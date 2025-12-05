@@ -21,33 +21,22 @@ wheels/
 *.egg
 
 # Virtual environments
+.venv/
 venv/
 ENV/
-env/
-.venv/
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-*~
 
-# Environment variables
+# Environment
 .env
-.env.local
+
+# Telethon session files
 *.session
 *.session-journal
-
-# Logs
-*.log
-logs/
-
-# Test results
-.pytest_cache/
-htmlcov/
-.coverage
-coverage.xml
 
 # OS
 .DS_Store
