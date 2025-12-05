@@ -1,0 +1,25 @@
+# Settings and preferences test scenario for a_bot
+name: Settings Commands
+description: Tests settings and user preference commands
+
+tests:
+  - name: Settings Command
+    command: /settings
+    description: Test viewing settings
+    expected:
+      - not_empty: true
+    timeout: 10
+
+  - name: Preferences Command
+    command: /preferences
+    description: Test viewing/setting preferences
+    expected:
+      - not_empty: true
+    timeout: 10
+
+  - name: Profile Command
+    command: /profile
+    description: Test viewing user profile
+    expected:
+      - not_empty: true
+    timeout: 10

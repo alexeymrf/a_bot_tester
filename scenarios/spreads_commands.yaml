@@ -1,0 +1,32 @@
+# Spreads and alerts commands test scenario for a_bot
+name: Spreads Commands
+description: Tests spread and alert related commands
+
+tests:
+  - name: Top Spreads Command
+    command: /top
+    description: Test viewing top spreads
+    expected:
+      - not_empty: true
+    timeout: 20
+
+  - name: My Alerts Command
+    command: /myalerts
+    description: Test viewing user alerts
+    expected:
+      - not_empty: true
+    timeout: 15
+
+  - name: Exchanges Command
+    command: /exchanges
+    description: Test viewing supported exchanges
+    expected:
+      - not_empty: true
+    timeout: 10
+
+  - name: Symbols Command
+    command: /symbols
+    description: Test viewing available symbols
+    expected:
+      - not_empty: true
+    timeout: 15

@@ -1,147 +1,108 @@
-# a_bot Telegram Bot Tester
+# A_Bot Tester
 
-Automated testing tool for the a_bot Telegram bot using Telethon.
+A Telethon-based automated testing bot for testing the `a_bot` Telegram bot.
 
 ## Features
 
-- 🤖 Automated Telegram bot testing via user account
-- 📋 Test all bot commands (`/start`, `/help`, `/spreads`, `/alerts`, `/newalert`, `/settings`)
-- 🔘 Interactive button/callback testing
-- 📊 Comprehensive test reports
-- ⏱️ Response time measurement
-- 🔄 Conversation flow testing
+- **Automated Command Testing**: Send commands to the bot and verify responses
+- **Test Scenarios**: Define test scenarios in YAML format
+- **Response Validation**: Validate bot responses against expected patterns
+- **Test Reports**: Generate test execution reports
+- **CI/CD Integration**: Can be integrated into CI/CD pipelines
 
-## Requirements
+## Prerequisites
 
-- Python 3.11+
-- Telegram API credentials (api_id and api_hash)
-- User account (not bot)
+1. **Telegram API Credentials**: You need to obtain `api_id` and `api_hash` from [my.telegram.org](https://my.telegram.org)
+2. **Python 3.11+**
+3. **The target bot must be running**
 
-## Setup
-
-### 1. Get Telegram API Credentials
-
-1. Go to https://my.telegram.org/auth
-2. Log in with your phone number
-3. Go to "API development tools"
-4. Create a new application
-5. Copy `api_id` and `api_hash`
-
-### 2. Install Dependencies
+## Installation
 
 ```bash
+# Clone the repository
+git clone <repo-url>
+cd a_bot_tester
+
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # Linux/macOS
-# or
-venv\Scripts\activate  # Windows
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -e .
 ```
 
-### 3. Configure Environment
+## Configuration
 
+1. Copy the example environment file:
 ```bash
 cp .env.example .env
-# Edit .env with your credentials
 ```
 
-### 4. First Run (Authentication)
-
-```bash
-python -m src.auth
+2. Edit `.env` with your credentials:
+```env
+TELEGRAM_API_ID=your_api_id
+TELEGRAM_API_HASH=your_api_hash
+TELEGRAM_PHONE=+1234567890
+TARGET_BOT_USERNAME=your_bot_username
 ```
-
-This will:
-- Prompt for your phone number
-- Send a code to your Telegram
-- Create a session file for future runs
 
 ## Usage
 
-### Run All Tests
+### Running All Tests
 
 ```bash
-python -m src.main --bot-username your_bot_username
+python -m a_bot_tester.runner
 ```
 
-### Run Specific Tests
+### Running Specific Test Scenario
 
 ```bash
-# Test only commands
-python -m src.main --bot-username your_bot_username --test commands
-
-# Test only buttons/callbacks
-python -m src.main --bot-username your_bot_username --test callbacks
-
-# Test conversation flows
-python -m src.main --bot-username your_bot_username --test flows
+python -m a_bot_tester.runner --scenario basic_commands
 ```
 
 ### Interactive Mode
 
 ```bash
-python -m src.interactive --bot-username your_bot_username
+python -m a_bot_tester.interactive
 ```
 
 ## Test Scenarios
 
-### Commands
-- `/start` - Registration and welcome message
-- `/help` - Help information
-- `/spreads` - Funding rate spreads display
-- `/alerts` - User alerts list
-- `/newalert` - Alert creation flow
-- `/settings` - User settings
-- `/menu` - Main menu display
+Test scenarios are defined in `scenarios/` directory in YAML format:
 
-### Callback Buttons
-- Menu navigation
-- Pagination (spreads, alerts)
-- Alert management (view, toggle, delete)
-- Settings modification
-- Language switching
+```yaml
+name: Basic Commands Test
+description: Test basic bot commands
 
-### Conversation Flows
-- Complete alert creation
-- Settings modification
-- Full user journey
+tests:
+  - name: Start Command
+    command: /start
+    expected:
+      - contains: "Welcome"
+      - type: message
+    timeout: 10
 
-## Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `TELEGRAM_API_ID` | Telegram API ID | Yes |
-| `TELEGRAM_API_HASH` | Telegram API Hash | Yes |
-| `TELEGRAM_PHONE` | Your phone number | Yes |
-| `TARGET_BOT_USERNAME` | Bot username to test | Yes |
-| `SESSION_NAME` | Session file name | No (default: `tester`) |
-| `LOG_LEVEL` | Logging level | No (default: `INFO`) |
+  - name: Help Command
+    command: /help
+    expected:
+      - contains: "Available commands"
+    timeout: 10
+```
 
 ## Project Structure
 
 ```
 a_bot_tester/
 ├── src/
-│   ├── __init__.py
-│   ├── main.py           # Main entry point
-│   ├── auth.py           # Authentication helper
-│   ├── interactive.py    # Interactive testing mode
-│   ├── config.py         # Configuration
-│   ├── client.py         # Telethon client wrapper
-│   ├── tester.py         # Test orchestrator
-│   ├── tests/
-│   │   ├── __init__.py
-│   │   ├── base.py       # Base test class
-│   │   ├── commands.py   # Command tests
-│   │   ├── callbacks.py  # Callback tests
-│   │   └── flows.py      # Flow tests
-│   └── utils/
+│   └── a_bot_tester/
 │       ├── __init__.py
-│       ├── logging.py    # Logging utilities
-│       └── report.py     # Test reporting
-├── tests/                # pytest tests
+│       ├── client.py          # Telethon client wrapper
+│       ├── runner.py          # Test runner
+│       ├── interactive.py     # Interactive mode
+│       ├── validator.py       # Response validators
+│       └── reporter.py        # Test report generator
+├── scenarios/                 # Test scenario YAML files
+├── tests/                     # Unit tests
 ├── .env.example
 ├── pyproject.toml
 └── README.md
@@ -149,13 +110,11 @@ a_bot_tester/
 
 ## Security Notes
 
-⚠️ **Important**: This tool uses your personal Telegram account, not a bot.
-
-- Never share your `.session` files
-- Keep your API credentials secret
-- Don't run automated tests too frequently to avoid rate limits
-- This is for testing YOUR bots only
+- **Never commit your `.env` file** - it contains sensitive credentials
+- **Session files** (`*.session`) are created by Telethon and should not be shared
+- Use a separate Telegram account for testing purposes
+- The first run will require phone verification via SMS code
 
 ## License
 
-MIT
+MIT License

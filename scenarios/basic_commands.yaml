@@ -1,0 +1,27 @@
+# Basic commands test scenario for a_bot
+name: Basic Commands
+description: Tests basic bot commands like /start, /help, /status
+
+tests:
+  - name: Start Command
+    command: /start
+    description: Test the /start command
+    expected:
+      - not_empty: true
+      - contains: "Welcome"
+    timeout: 15
+
+  - name: Help Command
+    command: /help
+    description: Test the /help command
+    expected:
+      - not_empty: true
+      - contains: "command"
+    timeout: 10
+
+  - name: Status Command
+    command: /status
+    description: Test the /status command
+    expected:
+      - not_empty: true
+    timeout: 10
