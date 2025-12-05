@@ -1,0 +1,48 @@
+[project]
+name = "a_bot_tester"
+version = "1.0.0"
+description = "Telethon-based test bot for automated testing of a_bot Telegram bot"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Alexey", email = "alexey@example.com"}
+]
+keywords = ["telegram", "telethon", "testing", "bot", "automation"]
+
+dependencies = [
+    "telethon>=1.34.0",
+    "python-dotenv>=1.0.0",
+    "asyncio>=3.4.3",
+    "structlog>=24.1.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "rich>=13.0.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.3.0",
+    "mypy>=1.8.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
